@@ -1,31 +1,62 @@
-# Collaborative Whiteboard
+# Real-Time Collaborative Whiteboard
 
-As the name suggests, this project is an online collaborative whiteboard that allows many users to draw simultaneously on a large virtual board.
-The board is updated in real time for all connected users, and its state is always persisted. It can be used for many different purposes, including art, entertainment, design, teaching.
+A real-time collaborative whiteboard where multiple users can join the same room and draw together. Changes are synchronized instantly using Socket.IO, with support for user presence, live cursors, undo, clearing the board, and persistent whiteboard state.
 
-A demonstration will be available soon!
+## Features
 
-<!-- ## Screenshots -->
+- 🎨 Real-time collaborative drawing
+- 🏠 Room-based collaboration
+- 👥 Username and online-user presence
+- ✏️ Live remote cursors
+- ↩️ User-specific undo
+- 🗑️ Clear whiteboard for everyone in the room
+- 💾 Persistent whiteboard state using JSON storage
+- 🎨 Custom drawing colors
+- 📏 Adjustable stroke width
+- 🌙 Responsive dark-themed interface
 
-### Running the code
+## Tech Stack
 
-You can run the code with [node.js](https://nodejs.org/) directly.
+### Frontend
+- React
+- React Sketch Canvas
+- Socket.IO Client
+- CSS
 
-First, download the sources:
-```
-git clone https://github.com/Rathetsu/collaborative-whiteboard.git
-cd collaborative-whiteboard
-```
+### Backend
+- Node.js
+- Express
+- Socket.IO
+- File System (JSON persistence)
 
-Then [install node.js](https://nodejs.org/en/download/) (v12.0 or superior), then install dependencies:
+## Project Structure
 
-```
-npm i
-```
-
-Finally, you can start the server:
-```
-PORT=5001 npm start
-```
-
-This will run the whiteboard directly on your machine, on port 5001, without any isolation from the other services.
+```text
+collaborative-whiteboard/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── board/
+│   │   │   │   ├── Board.jsx
+│   │   │   │   └── style.css
+│   │   │   │
+│   │   │   ├── container/
+│   │   │   │   ├── Container.jsx
+│   │   │   │   └── Container.css
+│   │   │   │
+│   │   │   └── join/
+│   │   │       ├── JoinScreen.jsx
+│   │   │       └── JoinScreen.css
+│   │   │
+│   │   ├── App.js
+│   │   └── index.js
+│   │
+│   └── package.json
+│
+├── server.js
+├── temp/
+│   └── .gitkeep
+│
+├── .gitignore
+└── README.md
