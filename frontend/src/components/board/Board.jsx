@@ -1,23 +1,35 @@
-import React, { Component } from "react";
+import React, { forwardRef } from 'react';
+import { ReactSketchCanvas } from 'react-sketch-canvas';
 
-import { Canvas } from '../Canvas';
-import './style.css';
+const Board = forwardRef((props, ref) => {
+	console.log('BOARD COMPONENT LOADED');
 
-class Board extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
+	const handleStroke = (path, isEraser) => {
+		console.log('========== STROKE ==========');
+		console.log('Path:', path);
+		console.log('Is eraser:', isEraser);
 
-	render() {
-		return (
-			<Canvas
-				strokeColor={this.props.strokeColor}
-				strokeWidth={this.props.strokeWidth}
-				onStroke={this.props.onStroke}
-			/>
-		);
-	}
+		if (isEraser) {
+			return;
+		}
 
-}
+		if (props.onDraw) {
+			console.log('Sending stroke to Container');
+			props.onDraw(path);
+		}
+	};
+
+	return (
+		<ReactSketchCanvas
+			ref={ref}
+			strokeColor={props.strokeColor}
+			strokeWidth={props.strokeWidth}
+			canvasColor="white"
+			width="100%"
+			height="100%"
+			onStroke={handleStroke}
+		/>
+	);
+});
+
 export default Board;

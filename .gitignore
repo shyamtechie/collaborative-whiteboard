@@ -1,24 +1,36 @@
-node_modules
+# Dependencies
+node_modules/
 
-lib-cov
-*.seed
+# Build files
+build/
+dist/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
 *.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-pids
-logs
-results
-
-npm-debug.log
-
+# OS files
 .DS_Store
+Thumbs.db
 
-# Jetbrains
+# IDE files
 .idea/
+.vscode/
 
-# Nightwatch test results
+# Test output
+coverage/
 tests_output/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Runtime whiteboard data
+temp/whiteboards.json

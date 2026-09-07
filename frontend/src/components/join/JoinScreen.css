@@ -1,0 +1,609 @@
+/* =========================================
+   MAIN SCREEN
+========================================= */
+
+.join-screen {
+	position: relative;
+
+	width: 100%;
+	height: 100vh;
+
+	overflow: hidden;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background: radial-gradient(
+		circle at 50% 22%,
+		#293d69 0%,
+		#131e3c 28%,
+		#080f25 58%,
+		#030611 100%
+	);
+
+	color: white;
+
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* =========================================
+   STARS
+========================================= */
+
+.stars,
+.stars-two {
+	position: absolute;
+
+	inset: 0;
+
+	pointer-events: none;
+
+	transform: translate(
+		calc(var(--mouse-x, 0px) * 0.35),
+		calc(var(--mouse-y, 0px) * 0.35)
+	);
+
+	transition: transform 1.5s ease-out;
+}
+
+.stars::before,
+.stars-two::before {
+	content: '';
+
+	position: absolute;
+
+	width: 2px;
+	height: 2px;
+
+	border-radius: 50%;
+
+	background: white;
+
+	box-shadow:
+		5vw 12vh 1px rgba(255, 255, 255, 0.65),
+		12vw 30vh 1px rgba(255, 255, 255, 0.35),
+		18vw 10vh 1px rgba(255, 255, 255, 0.7),
+		25vw 22vh 1px rgba(255, 255, 255, 0.3),
+		32vw 8vh 1px rgba(255, 255, 255, 0.6),
+		40vw 18vh 1px rgba(255, 255, 255, 0.4),
+		47vw 7vh 1px rgba(255, 255, 255, 0.7),
+		55vw 30vh 1px rgba(255, 255, 255, 0.35),
+		63vw 12vh 1px rgba(255, 255, 255, 0.65),
+		71vw 24vh 1px rgba(255, 255, 255, 0.4),
+		78vw 8vh 1px rgba(255, 255, 255, 0.7),
+		86vw 30vh 1px rgba(255, 255, 255, 0.35),
+		94vw 15vh 1px rgba(255, 255, 255, 0.6),
+		8vw 65vh 1px rgba(255, 255, 255, 0.3),
+		17vw 78vh 1px rgba(255, 255, 255, 0.5),
+		29vw 68vh 1px rgba(255, 255, 255, 0.4),
+		42vw 82vh 1px rgba(255, 255, 255, 0.3),
+		58vw 70vh 1px rgba(255, 255, 255, 0.5),
+		69vw 85vh 1px rgba(255, 255, 255, 0.4),
+		83vw 72vh 1px rgba(255, 255, 255, 0.6),
+		92vw 82vh 1px rgba(255, 255, 255, 0.3);
+}
+
+.stars::before {
+	animation: starFloat 12s ease-in-out infinite alternate;
+}
+
+.stars-two {
+	opacity: 0.35;
+
+	transform: translate(
+		calc(var(--mouse-x, 0px) * 0.7),
+		calc(var(--mouse-y, 0px) * 0.7)
+	);
+
+	transition: transform 2s ease-out;
+}
+
+.stars-two::before {
+	transform: scale(1.5);
+
+	animation: starFloatTwo 18s ease-in-out infinite alternate;
+}
+
+@keyframes starFloat {
+	from {
+		transform: translateY(0);
+	}
+
+	to {
+		transform: translateY(-10px);
+	}
+}
+
+@keyframes starFloatTwo {
+	from {
+		transform: translate(0, 0);
+	}
+
+	to {
+		transform: translate(8px, -15px);
+	}
+}
+
+/* =========================================
+   MOON
+========================================= */
+
+.moon-wrapper {
+	position: absolute;
+
+	top: 7%;
+	left: 50%;
+
+	width: 240px;
+	height: 240px;
+
+	transform: translateX(-50%)
+		translate(
+			calc(var(--mouse-x, 0px) * 0.15),
+			calc(var(--mouse-y, 0px) * 0.15)
+		);
+
+	transition: transform 1.5s ease-out;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	z-index: 2;
+}
+
+.moon-wrapper::before {
+	content: '';
+
+	position: absolute;
+
+	width: 300px;
+	height: 300px;
+
+	border-radius: 50%;
+
+	background: rgba(180, 205, 255, 0.12);
+
+	filter: blur(38px);
+
+	animation: moonGlow 5s ease-in-out infinite alternate;
+}
+
+.moon {
+	position: relative;
+
+	width: 165px;
+	height: 165px;
+
+	border-radius: 50%;
+
+	background: radial-gradient(
+		circle at 35% 30%,
+		#ffffff 0%,
+		#edf1fa 45%,
+		#c5cfdf 100%
+	);
+
+	box-shadow:
+		0 0 30px rgba(255, 255, 255, 0.35),
+		0 0 75px rgba(170, 195, 255, 0.28);
+
+	animation: moonFloat 7s ease-in-out infinite alternate;
+}
+
+@keyframes moonFloat {
+	from {
+		transform: translateY(0);
+	}
+
+	to {
+		transform: translateY(-7px);
+	}
+}
+
+@keyframes moonGlow {
+	from {
+		opacity: 0.45;
+		transform: scale(0.95);
+	}
+
+	to {
+		opacity: 0.9;
+		transform: scale(1.05);
+	}
+}
+
+/* =========================================
+   CLOUDS
+========================================= */
+
+.cloud {
+	position: absolute;
+
+	z-index: 3;
+
+	width: 260px;
+	height: 55px;
+
+	border-radius: 50px;
+
+	background: rgba(190, 205, 230, 0.08);
+
+	filter: blur(10px);
+
+	pointer-events: none;
+}
+
+.cloud::before,
+.cloud::after {
+	content: '';
+
+	position: absolute;
+
+	border-radius: 50%;
+
+	background: rgba(190, 205, 230, 0.08);
+}
+
+.cloud::before {
+	width: 110px;
+	height: 110px;
+
+	left: 45px;
+	bottom: -10px;
+}
+
+.cloud::after {
+	width: 85px;
+	height: 85px;
+
+	left: 125px;
+	bottom: -5px;
+}
+
+.cloud-one {
+	top: 18%;
+	left: -300px;
+
+	animation: cloudMoveOne 38s linear infinite;
+}
+
+.cloud-two {
+	top: 30%;
+	left: -400px;
+
+	opacity: 0.55;
+
+	transform: scale(0.7);
+
+	animation: cloudMoveTwo 52s linear infinite;
+}
+
+.cloud-three {
+	top: 14%;
+	left: -500px;
+
+	opacity: 0.35;
+
+	transform: scale(0.5);
+
+	animation: cloudMoveThree 65s linear infinite;
+}
+
+@keyframes cloudMoveOne {
+	from {
+		left: -300px;
+	}
+
+	to {
+		left: 110%;
+	}
+}
+
+@keyframes cloudMoveTwo {
+	from {
+		left: -400px;
+	}
+
+	to {
+		left: 110%;
+	}
+}
+
+@keyframes cloudMoveThree {
+	from {
+		left: -500px;
+	}
+
+	to {
+		left: 110%;
+	}
+}
+
+/* =========================================
+   CONTENT
+========================================= */
+
+.join-content {
+	position: relative;
+
+	z-index: 10;
+
+	width: 420px;
+
+	margin-top: 130px;
+
+	text-align: center;
+
+	animation: contentAppear 1s ease-out;
+}
+
+@keyframes contentAppear {
+	from {
+		opacity: 0;
+
+		transform: translateY(20px);
+	}
+
+	to {
+		opacity: 1;
+
+		transform: translateY(0);
+	}
+}
+
+/* =========================================
+   APP ICON
+========================================= */
+
+.app-icon {
+	width: 42px;
+	height: 42px;
+
+	margin: 0 auto 12px;
+
+	display: flex;
+
+	align-items: center;
+	justify-content: center;
+
+	border-radius: 12px;
+
+	background: rgba(255, 255, 255, 0.1);
+
+	border: 1px solid rgba(255, 255, 255, 0.15);
+
+	backdrop-filter: blur(15px);
+
+	font-size: 20px;
+}
+
+/* =========================================
+   TITLE
+========================================= */
+
+.join-content h1 {
+	margin: 0;
+
+	font-size: 42px;
+
+	font-weight: 600;
+
+	letter-spacing: -1.5px;
+
+	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+	margin-top: 8px;
+
+	font-size: 16px;
+
+	color: rgba(255, 255, 255, 0.62);
+}
+
+/* =========================================
+   GLASS CARD
+========================================= */
+
+.join-card {
+	margin-top: 32px;
+
+	padding: 28px;
+
+	border-radius: 24px;
+
+	background: rgba(255, 255, 255, 0.065);
+
+	border: 1px solid rgba(255, 255, 255, 0.13);
+
+	box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+
+	backdrop-filter: blur(28px);
+
+	-webkit-backdrop-filter: blur(28px);
+}
+
+/* =========================================
+   TEXT
+========================================= */
+
+.welcome-text {
+	margin: 0 0 5px;
+
+	font-size: 13px;
+
+	text-transform: uppercase;
+
+	letter-spacing: 1.5px;
+
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.join-card h2 {
+	margin: 0 0 20px;
+
+	font-size: 23px;
+
+	font-weight: 500;
+}
+
+/* =========================================
+   INPUT
+========================================= */
+
+.join-card input {
+	width: 100%;
+
+	padding: 14px 16px;
+
+	box-sizing: border-box;
+
+	border-radius: 12px;
+
+	border: 1px solid rgba(255, 255, 255, 0.14);
+
+	outline: none;
+
+	background: rgba(0, 0, 0, 0.2);
+
+	color: white;
+
+	font-size: 15px;
+
+	transition:
+		border 0.25s,
+		background 0.25s,
+		box-shadow 0.25s;
+}
+
+.join-card input::placeholder {
+	color: rgba(255, 255, 255, 0.38);
+}
+
+.join-card input:focus {
+	background: rgba(0, 0, 0, 0.28);
+
+	border-color: rgba(255, 255, 255, 0.4);
+
+	box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+}
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.join-card button {
+	width: 100%;
+
+	margin-top: 12px;
+
+	padding: 14px;
+
+	border: none;
+
+	border-radius: 12px;
+
+	background: white;
+
+	color: #111827;
+
+	font-size: 15px;
+
+	font-weight: 600;
+
+	cursor: pointer;
+
+	transition:
+		transform 0.2s,
+		box-shadow 0.2s;
+}
+
+.join-card button span {
+	margin-left: 8px;
+
+	font-size: 18px;
+}
+
+.join-card button:hover {
+	transform: translateY(-2px);
+
+	box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+}
+
+.join-card button:active {
+	transform: translateY(0);
+}
+
+/* =========================================
+   ROOM
+========================================= */
+
+.room-label {
+	margin-top: 18px;
+
+	font-size: 12px;
+
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.room-label strong {
+	margin-left: 6px;
+
+	color: rgba(255, 255, 255, 0.75);
+
+	font-weight: 500;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.join-footer {
+	position: absolute;
+
+	bottom: 20px;
+
+	left: 0;
+	right: 0;
+
+	text-align: center;
+
+	font-size: 11px;
+
+	color: rgba(255, 255, 255, 0.25);
+
+	letter-spacing: 0.3px;
+
+	z-index: 10;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+	.join-content {
+		width: calc(100% - 40px);
+
+		margin-top: 110px;
+	}
+
+	.moon {
+		width: 135px;
+		height: 135px;
+	}
+
+	.moon-wrapper {
+		top: 7%;
+	}
+
+	.join-content h1 {
+		font-size: 34px;
+	}
+
+	.join-card {
+		padding: 22px;
+	}
+}
