@@ -1,4 +1,15 @@
 .board {
-	width: 100%;
-	height: 100%;
+  width: 100%;
+  height: 100%;
+}
+.whiteboard-canvas {
+  display: block;
+
+  width: 100% !important;
+
+  height: 100% !important;
+
+  background: #ffffff;
+
+  touch-action: none;
 }

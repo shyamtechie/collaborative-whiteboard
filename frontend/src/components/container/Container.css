@@ -1,647 +1,532 @@
-/* =========================================================
-   WHITEBOARD
-   Cinematic Moon / Night Theme
-========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+/* =========================================
+   MAIN CONTAINER
+========================================= */
 
 .container {
-	position: relative;
+  width: 100%;
+  height: 100vh;
 
-	width: 100%;
-	height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-	display: flex;
-	flex-direction: column;
+  padding: 18px;
 
-	overflow: hidden;
+  position: relative;
 
-	background:
-		radial-gradient(
-			circle at 82% 18%,
-			rgba(100, 135, 205, 0.2) 0%,
-			rgba(100, 135, 205, 0.08) 18%,
-			transparent 42%
-		),
-		radial-gradient(
-			circle at 18% 85%,
-			rgba(50, 80, 145, 0.2) 0%,
-			transparent 38%
-		),
-		linear-gradient(
-			145deg,
-			#020611 0%,
-			#071126 45%,
-			#0a1630 72%,
-			#030711 100%
-		);
+  overflow: hidden;
 
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(42, 86, 160, 0.28),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 85% 80%,
+      rgba(20, 55, 120, 0.25),
+      transparent 35%
+    ),
+    linear-gradient(135deg, #030914, #08172d 45%, #0a1c35);
 }
 
-/* =========================================================
-   STAR FIELD
-========================================================= */
+/* =========================================
+   STARS
+========================================= */
 
 .container::before {
-	content: '';
+  content: '';
 
-	position: absolute;
+  position: absolute;
 
-	inset: 0;
+  inset: 0;
 
-	pointer-events: none;
+  pointer-events: none;
 
-	z-index: 0;
+  opacity: 0.5;
 
-	opacity: 0.65;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
 
-	background-image:
-		radial-gradient(
-			circle,
-			rgba(255, 255, 255, 0.75) 1px,
-			transparent 1.5px
-		),
-		radial-gradient(
-			circle,
-			rgba(255, 255, 255, 0.45) 1px,
-			transparent 1.5px
-		),
-		radial-gradient(circle, rgba(255, 255, 255, 0.3) 1px, transparent 1.5px);
+  background-size:
+    110px 110px,
+    170px 170px;
 
-	background-size:
-		180px 180px,
-		260px 260px,
-		340px 340px;
-
-	background-position:
-		20px 40px,
-		100px 120px,
-		50px 10px;
-
-	animation: starsDrift 30s linear infinite;
+  background-position:
+    10px 20px,
+    70px 80px;
 }
 
-@keyframes starsDrift {
-	from {
-		transform: translate3d(0, 0, 0);
-	}
-
-	to {
-		transform: translate3d(-25px, -15px, 0);
-	}
-}
-
-/* =========================================================
+/* =========================================
    MOON
-========================================================= */
+========================================= */
 
 .container::after {
-	content: '';
+  content: '';
 
-	position: absolute;
+  position: absolute;
 
-	width: 125px;
-	height: 125px;
+  width: 220px;
+  height: 220px;
 
-	top: 72px;
-	right: 12px;
+  border-radius: 50%;
 
-	border-radius: 50%;
+  right: 45px;
+  top: 70px;
 
-	background: radial-gradient(
-		circle at 35% 30%,
-		#ffffff 0%,
-		#edf2fb 48%,
-		#c6d0e1 100%
-	);
+  background: radial-gradient(circle at 35% 35%, #ffffff, #dce8f8 55%, #b8cbe2);
 
-	box-shadow:
-		0 0 25px rgba(255, 255, 255, 0.4),
-		0 0 65px rgba(150, 180, 240, 0.28),
-		0 0 120px rgba(120, 150, 220, 0.16);
+  box-shadow: 0 0 40px rgba(190, 220, 255, 0.25);
 
-	pointer-events: none;
+  opacity: 0.08;
 
-	z-index: 1;
-
-	opacity: 0.85;
-
-	animation: moonFloat 7s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
-@keyframes moonFloat {
-	from {
-		transform: translateY(0);
-	}
+/* =========================================
+   TOP BAR
+========================================= */
 
-	to {
-		transform: translateY(-7px);
-	}
+.top-bar {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  min-height: 98px;
+
+  padding: 18px 26px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  border-radius: 20px 20px 0 0;
+
+  background: linear-gradient(
+    135deg,
+    rgba(18, 45, 82, 0.88),
+    rgba(8, 27, 54, 0.82)
+  );
+
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
 }
 
-/* =========================================================
-   MOON MIST
-========================================================= */
+/* =========================================
+   TITLE
+========================================= */
 
-.container .board-container::after {
-	content: '';
+.title-section {
+  display: flex;
 
-	position: absolute;
+  flex-direction: column;
 
-	width: 230px;
-	height: 60px;
-
-	right: -120px;
-	top: 65px;
-
-	border-radius: 50px;
-
-	background: rgba(180, 200, 235, 0.09);
-
-	filter: blur(15px);
-
-	pointer-events: none;
-
-	z-index: 2;
-
-	animation: mistFloat 9s ease-in-out infinite alternate;
+  gap: 4px;
 }
 
-@keyframes mistFloat {
-	from {
-		transform: translateX(-15px);
-	}
+.title-section h1 {
+  margin: 0;
 
-	to {
-		transform: translateX(15px);
-	}
+  color: #f5f9ff;
+
+  font-size: 30px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.5px;
 }
 
-/* =========================================================
-   TOOLBAR
-========================================================= */
+.title-section span {
+  color: #b8c8dc;
 
-.tool-bar-container {
-	position: relative;
-
-	z-index: 10;
-
-	min-height: 72px;
-
-	margin: 12px 14px 0;
-
-	padding: 10px 18px;
-
-	display: flex;
-
-	align-items: center;
-
-	gap: 14px;
-
-	flex-wrap: wrap;
-
-	box-sizing: border-box;
-
-	background: rgba(18, 31, 57, 0.72);
-
-	border: 1px solid rgba(255, 255, 255, 0.13);
-
-	border-radius: 17px;
-
-	box-shadow:
-		0 15px 45px rgba(0, 0, 0, 0.25),
-		inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-	backdrop-filter: blur(24px);
-
-	-webkit-backdrop-filter: blur(24px);
-
-	color: white;
+  font-size: 16px;
 }
 
-/* =========================================================
-   TOOLBAR TITLE
-========================================================= */
+/* =========================================
+   USERS
+========================================= */
 
-.toolbar-title {
-	display: flex;
+.users-section {
+  display: flex;
 
-	align-items: center;
+  align-items: center;
 
-	font-size: 19px;
-
-	font-weight: 650;
-
-	letter-spacing: -0.4px;
-
-	color: #ffffff;
-
-	white-space: nowrap;
-
-	margin-right: 4px;
-
-	text-shadow: 0 2px 15px rgba(255, 255, 255, 0.08);
+  gap: 12px;
 }
 
-/* =========================================================
-   ROOM
-========================================================= */
+.online-label {
+  display: flex;
 
-.room-info {
-	display: flex;
+  align-items: center;
 
-	align-items: center;
+  gap: 7px;
 
-	gap: 5px;
+  color: #dce7f5;
 
-	padding: 6px 11px;
-
-	border-radius: 999px;
-
-	background: rgba(255, 255, 255, 0.08);
-
-	border: 1px solid rgba(255, 255, 255, 0.08);
-
-	color: rgba(255, 255, 255, 0.58);
-
-	font-size: 12px;
-
-	white-space: nowrap;
+  font-size: 15px;
 }
 
-.room-info strong {
-	color: rgba(255, 255, 255, 0.95);
+.online-dot {
+  width: 9px;
+  height: 9px;
 
-	font-weight: 600;
-}
+  border-radius: 50%;
 
-/* =========================================================
-   ONLINE USERS
-========================================================= */
+  background: #4ade80;
 
-.online-users {
-	display: flex;
-
-	align-items: center;
-
-	gap: 8px;
-
-	min-width: 0;
-}
-
-.online-users > span {
-	display: flex;
-
-	align-items: center;
-
-	gap: 5px;
-
-	font-size: 12px;
-
-	color: rgba(255, 255, 255, 0.72);
-
-	white-space: nowrap;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.7);
 }
 
 .user-list {
-	display: flex;
+  display: flex;
 
-	align-items: center;
+  gap: 7px;
 
-	gap: 5px;
+  flex-wrap: wrap;
 }
 
-.user-name {
-	padding: 5px 10px;
+.user-badge {
+  padding: 7px 12px;
 
-	border-radius: 999px;
+  border-radius: 999px;
 
-	background: rgba(255, 255, 255, 0.09);
+  color: #edf5ff;
 
-	border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
 
-	color: rgba(255, 255, 255, 0.82);
+  background: rgba(255, 255, 255, 0.08);
 
-	font-size: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-	font-weight: 500;
-
-	white-space: nowrap;
+  backdrop-filter: blur(8px);
 }
 
-/* =========================================================
-   TOOL LABELS
-========================================================= */
+/* =========================================
+   TOOLBAR
+========================================= */
 
-.tool-bar-container label {
-	display: flex;
+.toolbar {
+  position: relative;
 
-	align-items: center;
+  z-index: 2;
 
-	gap: 7px;
+  display: flex;
 
-	font-size: 12px;
+  align-items: center;
 
-	font-weight: 500;
+  gap: 14px;
 
-	color: rgba(255, 255, 255, 0.68);
+  min-height: 68px;
 
-	white-space: nowrap;
+  padding: 12px 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(7, 27, 52, 0.94),
+    rgba(19, 37, 62, 0.92)
+  );
+
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+  backdrop-filter: blur(15px);
 }
 
-/* =========================================================
+/* =========================================
+   TOOL GROUP
+========================================= */
+
+.tool-group {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.tool-group label {
+  color: #e4edf8;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+/* =========================================
    COLOR PICKER
-========================================================= */
+========================================= */
 
-.tool-bar-container input[type='color'] {
-	width: 31px;
-	height: 31px;
+.tool-group input[type='color'] {
+  width: 48px;
+  height: 38px;
 
-	padding: 3px;
+  padding: 3px;
 
-	border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.85);
 
-	border-radius: 9px;
+  border-radius: 8px;
 
-	background: rgba(255, 255, 255, 0.08);
+  background: white;
 
-	cursor: pointer;
-
-	box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
-/* =========================================================
-   WIDTH SLIDER
-========================================================= */
+.tool-group input[type='color']:disabled {
+  opacity: 0.45;
 
-.tool-bar-container input[type='range'] {
-	width: 90px;
-
-	cursor: pointer;
-
-	accent-color: white;
+  cursor: not-allowed;
 }
 
-/* =========================================================
-   WIDTH VALUE
-========================================================= */
+/* =========================================
+   SIZE
+========================================= */
 
-.tool-bar-container label span {
-	min-width: 14px;
-
-	text-align: center;
-
-	font-size: 12px;
-
-	color: rgba(255, 255, 255, 0.55);
+.size-group {
+  min-width: 205px;
 }
 
-/* =========================================================
+.size-group input[type='range'] {
+  width: 125px;
+
+  accent-color: #2997ff;
+
+  cursor: pointer;
+}
+
+/* =========================================
    BUTTONS
-========================================================= */
+========================================= */
 
-.tool-bar-container button {
-	padding: 8px 14px;
+.tool-button {
+  min-height: 38px;
 
-	border: 1px solid rgba(255, 255, 255, 0.13);
+  padding: 8px 15px;
 
-	border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 
-	background: rgba(255, 255, 255, 0.07);
+  border-radius: 7px;
 
-	color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
 
-	cursor: pointer;
+  color: #101820;
 
-	font-size: 12px;
+  font-size: 14px;
 
-	font-weight: 550;
+  font-weight: 600;
 
-	transition:
-		background 0.2s ease,
-		transform 0.2s ease,
-		box-shadow 0.2s ease,
-		border-color 0.2s ease;
+  cursor: pointer;
+
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.tool-bar-container button:hover {
-	background: rgba(255, 255, 255, 0.14);
+.tool-button:hover {
+  transform: translateY(-1px);
 
-	border-color: rgba(255, 255, 255, 0.2);
+  background: #ffffff;
 
-	transform: translateY(-1px);
-
-	box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.tool-bar-container button:active {
-	transform: translateY(0);
+.tool-button:active {
+  transform: translateY(0);
 }
 
-/* =========================================================
-   WHITEBOARD CANVAS
-========================================================= */
+/* =========================================
+   ACTIVE PEN
+========================================= */
 
-.board-container {
-	position: relative;
+.active-tool {
+  background: linear-gradient(
+    135deg,
+    rgba(30, 144, 255, 0.35),
+    rgba(30, 100, 220, 0.25)
+  );
 
-	z-index: 5;
+  color: #ffffff;
 
-	flex: 1;
+  border-color: rgba(80, 170, 255, 0.55);
 
-	min-height: 0;
-
-	margin: 16px 75px 22px 35px;
-
-	padding: 0;
-
-	overflow: hidden;
-
-	background: #ffffff;
-
-	border: 1px solid rgba(255, 255, 255, 0.4);
-
-	border-radius: 20px;
-
-	box-shadow:
-		0 25px 65px rgba(0, 0, 0, 0.35),
-		0 5px 20px rgba(0, 0, 0, 0.18);
-
-	box-sizing: border-box;
+  box-shadow: 0 0 12px rgba(30, 144, 255, 0.18);
 }
 
-/* =========================================================
-   CANVAS INNER GLOW
-========================================================= */
+/* =========================================
+   ACTIVE ERASER
+========================================= */
 
-.board-container::before {
-	content: '';
+.eraser-active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 170, 70, 0.3),
+    rgba(255, 120, 50, 0.2)
+  );
 
-	position: absolute;
+  color: #ffffff;
 
-	inset: 0;
+  border-color: rgba(255, 170, 70, 0.55);
 
-	pointer-events: none;
-
-	z-index: 1;
-
-	border-radius: 20px;
-
-	box-shadow: inset 0 0 40px rgba(30, 50, 90, 0.045);
+  box-shadow: 0 0 12px rgba(255, 150, 60, 0.18);
 }
 
-/* =========================================================
+/* =========================================
+   CLEAR
+========================================= */
+
+.clear-button {
+  background: rgba(255, 245, 245, 0.95);
+}
+
+/* =========================================
+   BOARD
+========================================= */
+
+.board-wrapper {
+  position: relative;
+
+  z-index: 2;
+
+  flex: 1;
+
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  border-radius: 0 0 20px 20px;
+
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================
    REMOTE CURSOR
-   Original pencil + username style
-========================================================= */
+========================================= */
 
 .remote-cursor {
-	position: absolute;
+  position: absolute;
 
-	pointer-events: none;
+  z-index: 10;
 
-	z-index: 1000;
+  pointer-events: none;
 
-	display: flex;
+  display: flex;
 
-	align-items: center;
+  align-items: center;
 
-	gap: 5px;
+  gap: 5px;
 
-	padding: 5px 9px;
-
-	border-radius: 8px;
-
-	background: rgba(255, 255, 255, 0.96);
-
-	color: #1f2937;
-
-	font-size: 12px;
-
-	font-weight: 500;
-
-	white-space: nowrap;
-
-	border: 1px solid rgba(0, 0, 0, 0.08);
-
-	box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
-
-	transform: translate(6px, 6px);
-
-	backdrop-filter: blur(10px);
-
-	-webkit-backdrop-filter: blur(10px);
+  transform: translate(5px, 5px);
 }
 
-/* =========================================================
-   LARGE DESKTOP
-========================================================= */
+.remote-cursor span {
+  font-size: 20px;
 
-@media (min-width: 1200px) {
-	.board-container {
-		margin: 16px 90px 22px 45px;
-	}
-
-	.container::after {
-		right: 25px;
-	}
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
 }
 
-/* =========================================================
-   TABLET
-========================================================= */
+.remote-cursor small {
+  padding: 4px 8px;
 
-@media (max-width: 1000px) {
-	.tool-bar-container {
-		gap: 9px;
+  border-radius: 6px;
 
-		padding: 9px 12px;
-	}
+  color: #ffffff;
 
-	.toolbar-title {
-		font-size: 17px;
-	}
+  background: rgba(10, 25, 45, 0.88);
 
-	.online-users {
-		order: 5;
-	}
+  font-size: 11px;
 
-	.board-container {
-		margin: 12px 45px 16px 20px;
-
-		border-radius: 16px;
-	}
-
-	.container::after {
-		width: 100px;
-		height: 100px;
-
-		right: 8px;
-		top: 105px;
-	}
+  white-space: nowrap;
 }
 
-/* =========================================================
-   MOBILE
-========================================================= */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
-@media (max-width: 700px) {
-	.tool-bar-container {
-		margin: 7px 7px 0;
+@media (max-width: 900px) {
+  .container {
+    padding: 10px;
+  }
 
-		border-radius: 13px;
+  .top-bar {
+    min-height: auto;
 
-		min-height: auto;
-	}
+    padding: 14px 16px;
+  }
 
-	.board-container {
-		margin: 8px 15px 12px 10px;
+  .title-section h1 {
+    font-size: 22px;
+  }
 
-		border-radius: 14px;
-	}
+  .toolbar {
+    gap: 8px;
 
-	.online-users {
-		width: 100%;
-	}
+    padding: 10px;
 
-	.container::after {
-		width: 80px;
-		height: 80px;
+    overflow-x: auto;
 
-		right: 5px;
-		top: 110px;
+    flex-wrap: nowrap;
+  }
 
-		opacity: 0.45;
-	}
+  .size-group {
+    min-width: 170px;
+  }
 
-	.container .board-container::after {
-		display: none;
-	}
+  .tool-button {
+    white-space: nowrap;
+  }
 }
 
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
+@media (max-width: 600px) {
+  .top-bar {
+    align-items: flex-start;
 
-@media (max-width: 500px) {
-	.tool-bar-container {
-		align-items: flex-start;
-	}
+    flex-direction: column;
 
-	.toolbar-title {
-		width: 100%;
-	}
+    gap: 10px;
+  }
 
-	.board-container {
-		margin: 7px 10px 10px;
-	}
+  .users-section {
+    align-items: flex-start;
+  }
 
-	.container::after {
-		width: 65px;
-		height: 65px;
+  .title-section h1 {
+    font-size: 20px;
+  }
 
-		top: 150px;
-		right: 5px;
+  .toolbar {
+    min-height: 62px;
+  }
 
-		opacity: 0.3;
-	}
+  .board-wrapper {
+    border-radius: 0 0 14px 14px;
+  }
 }

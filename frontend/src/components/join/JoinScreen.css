@@ -1,582 +1,819 @@
 /* =========================================
-   MAIN SCREEN
+   MAIN NIGHT SKY
 ========================================= */
 
-.join-screen {
-	position: relative;
+.welcome-page {
+  width: 100%;
+  height: 100vh;
 
-	width: 100%;
-	height: 100vh;
+  position: relative;
 
-	overflow: hidden;
+  overflow: hidden;
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  isolation: isolate;
 
-	background: radial-gradient(
-		circle at 50% 22%,
-		#293d69 0%,
-		#131e3c 28%,
-		#080f25 58%,
-		#030611 100%
-	);
+  background:
+    radial-gradient(
+      ellipse at 50% 16%,
+      rgba(55, 83, 132, 0.2),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 50% 75%,
+      rgba(21, 43, 78, 0.22),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #020611 0%, #040b19 45%, #020711 100%);
 
-	color: white;
+  color: #ffffff;
 
-	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto,
+    Arial, sans-serif;
 }
 
 /* =========================================
    STARS
 ========================================= */
 
-.stars,
-.stars-two {
-	position: absolute;
+.stars {
+  position: absolute;
 
-	inset: 0;
+  inset: 0;
 
-	pointer-events: none;
+  z-index: 1;
 
-	transform: translate(
-		calc(var(--mouse-x, 0px) * 0.35),
-		calc(var(--mouse-y, 0px) * 0.35)
-	);
+  overflow: hidden;
 
-	transition: transform 1.5s ease-out;
+  pointer-events: none;
 }
 
-.stars::before,
-.stars-two::before {
-	content: '';
+.star {
+  position: absolute;
 
-	position: absolute;
+  width: 2px;
+  height: 2px;
 
-	width: 2px;
-	height: 2px;
+  border-radius: 50%;
 
-	border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
 
-	background: white;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.55);
 
-	box-shadow:
-		5vw 12vh 1px rgba(255, 255, 255, 0.65),
-		12vw 30vh 1px rgba(255, 255, 255, 0.35),
-		18vw 10vh 1px rgba(255, 255, 255, 0.7),
-		25vw 22vh 1px rgba(255, 255, 255, 0.3),
-		32vw 8vh 1px rgba(255, 255, 255, 0.6),
-		40vw 18vh 1px rgba(255, 255, 255, 0.4),
-		47vw 7vh 1px rgba(255, 255, 255, 0.7),
-		55vw 30vh 1px rgba(255, 255, 255, 0.35),
-		63vw 12vh 1px rgba(255, 255, 255, 0.65),
-		71vw 24vh 1px rgba(255, 255, 255, 0.4),
-		78vw 8vh 1px rgba(255, 255, 255, 0.7),
-		86vw 30vh 1px rgba(255, 255, 255, 0.35),
-		94vw 15vh 1px rgba(255, 255, 255, 0.6),
-		8vw 65vh 1px rgba(255, 255, 255, 0.3),
-		17vw 78vh 1px rgba(255, 255, 255, 0.5),
-		29vw 68vh 1px rgba(255, 255, 255, 0.4),
-		42vw 82vh 1px rgba(255, 255, 255, 0.3),
-		58vw 70vh 1px rgba(255, 255, 255, 0.5),
-		69vw 85vh 1px rgba(255, 255, 255, 0.4),
-		83vw 72vh 1px rgba(255, 255, 255, 0.6),
-		92vw 82vh 1px rgba(255, 255, 255, 0.3);
+  animation: starTwinkle 4s ease-in-out infinite;
 }
 
-.stars::before {
-	animation: starFloat 12s ease-in-out infinite alternate;
+.star-1 {
+  left: 5%;
+  top: 12%;
+}
+.star-2 {
+  left: 11%;
+  top: 27%;
+}
+.star-3 {
+  left: 18%;
+  top: 8%;
+}
+.star-4 {
+  left: 25%;
+  top: 19%;
+}
+.star-5 {
+  left: 32%;
+  top: 11%;
+}
+.star-6 {
+  left: 39%;
+  top: 26%;
+}
+.star-7 {
+  left: 47%;
+  top: 8%;
+}
+.star-8 {
+  left: 55%;
+  top: 21%;
+}
+.star-9 {
+  left: 63%;
+  top: 10%;
+}
+.star-10 {
+  left: 70%;
+  top: 28%;
+}
+.star-11 {
+  left: 78%;
+  top: 14%;
+}
+.star-12 {
+  left: 87%;
+  top: 8%;
+}
+.star-13 {
+  left: 95%;
+  top: 22%;
 }
 
-.stars-two {
-	opacity: 0.35;
-
-	transform: translate(
-		calc(var(--mouse-x, 0px) * 0.7),
-		calc(var(--mouse-y, 0px) * 0.7)
-	);
-
-	transition: transform 2s ease-out;
+.star-14 {
+  left: 8%;
+  top: 44%;
+}
+.star-15 {
+  left: 16%;
+  top: 56%;
+}
+.star-16 {
+  left: 29%;
+  top: 43%;
+}
+.star-17 {
+  left: 42%;
+  top: 54%;
+}
+.star-18 {
+  left: 58%;
+  top: 45%;
+}
+.star-19 {
+  left: 71%;
+  top: 57%;
+}
+.star-20 {
+  left: 84%;
+  top: 45%;
+}
+.star-21 {
+  left: 93%;
+  top: 61%;
 }
 
-.stars-two::before {
-	transform: scale(1.5);
-
-	animation: starFloatTwo 18s ease-in-out infinite alternate;
+.star-22 {
+  left: 4%;
+  top: 72%;
+}
+.star-23 {
+  left: 21%;
+  top: 82%;
+}
+.star-24 {
+  left: 36%;
+  top: 72%;
+}
+.star-25 {
+  left: 51%;
+  top: 87%;
+}
+.star-26 {
+  left: 66%;
+  top: 76%;
+}
+.star-27 {
+  left: 79%;
+  top: 87%;
+}
+.star-28 {
+  left: 91%;
+  top: 78%;
+}
+.star-29 {
+  left: 14%;
+  top: 92%;
+}
+.star-30 {
+  left: 58%;
+  top: 68%;
 }
 
-@keyframes starFloat {
-	from {
-		transform: translateY(0);
-	}
-
-	to {
-		transform: translateY(-10px);
-	}
+.star-3,
+.star-11,
+.star-18,
+.star-25 {
+  width: 3px;
+  height: 3px;
 }
 
-@keyframes starFloatTwo {
-	from {
-		transform: translate(0, 0);
-	}
+.star-6,
+.star-15,
+.star-22,
+.star-29 {
+  width: 1px;
+  height: 1px;
+}
 
-	to {
-		transform: translate(8px, -15px);
-	}
+.star-2,
+.star-8,
+.star-14,
+.star-20,
+.star-26 {
+  animation-delay: 1s;
+}
+
+.star-3,
+.star-10,
+.star-17,
+.star-24,
+.star-30 {
+  animation-delay: 2s;
+}
+
+.star-5,
+.star-12,
+.star-19,
+.star-27 {
+  animation-delay: 3s;
+}
+
+@keyframes starTwinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+
+    transform: scale(0.7);
+  }
+
+  50% {
+    opacity: 1;
+
+    transform: scale(1.35);
+  }
+}
+
+/* =========================================
+   CLOUD FIELD
+========================================= */
+
+.cloud-field {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  overflow: hidden;
+
+  pointer-events: none;
+}
+
+/* =========================================
+   REAL CLOUD BASE
+========================================= */
+
+.real-cloud {
+  position: absolute;
+
+  width: 620px;
+  height: 180px;
+
+  opacity: 0.34;
+
+  filter: blur(20px);
+
+  will-change: transform, opacity;
+
+  mix-blend-mode: screen;
+}
+
+/* =========================================
+   CLOUD PARTS
+========================================= */
+
+.cloud-part {
+  position: absolute;
+
+  display: block;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(148, 163, 187, 0.38) 0%,
+    rgba(115, 132, 158, 0.25) 35%,
+    rgba(72, 91, 121, 0.12) 62%,
+    transparent 78%
+  );
+}
+
+/* Cloud shape 1 */
+
+.cloud-part-1 {
+  width: 230px;
+  height: 105px;
+
+  left: 10px;
+  top: 55px;
+}
+
+/* Cloud shape 2 */
+
+.cloud-part-2 {
+  width: 270px;
+  height: 135px;
+
+  left: 115px;
+  top: 25px;
+}
+
+/* Cloud shape 3 */
+
+.cloud-part-3 {
+  width: 220px;
+  height: 120px;
+
+  left: 250px;
+  top: 45px;
+}
+
+/* Cloud shape 4 */
+
+.cloud-part-4 {
+  width: 240px;
+  height: 100px;
+
+  left: 365px;
+  top: 70px;
+}
+
+/* Cloud shape 5 */
+
+.cloud-part-5 {
+  width: 180px;
+  height: 80px;
+
+  left: 470px;
+  top: 85px;
+}
+
+/* =========================================
+   LEFT CLOUD
+========================================= */
+
+.cloud-left {
+  left: -270px;
+  top: 235px;
+
+  transform: scale(1.15);
+
+  animation:
+    cloudLeftMovement 48s ease-in-out infinite alternate,
+    cloudBreathing 12s ease-in-out infinite;
+}
+
+@keyframes cloudLeftMovement {
+  0% {
+    transform: translateX(0) translateY(0) scale(1.15);
+  }
+
+  100% {
+    transform: translateX(460px) translateY(-25px) scale(1.23);
+  }
+}
+
+/* =========================================
+   RIGHT CLOUD
+========================================= */
+
+.cloud-right {
+  right: -330px;
+  top: 310px;
+
+  transform: scale(1.35);
+
+  opacity: 0.3;
+
+  animation:
+    cloudRightMovement 58s ease-in-out infinite alternate,
+    cloudBreathing 15s ease-in-out infinite;
+}
+
+@keyframes cloudRightMovement {
+  0% {
+    transform: translateX(0) translateY(0) scale(1.35);
+  }
+
+  100% {
+    transform: translateX(-510px) translateY(-32px) scale(1.45);
+  }
+}
+
+/* =========================================
+   BACKGROUND CLOUD
+========================================= */
+
+.cloud-background {
+  left: 50%;
+
+  top: 175px;
+
+  width: 850px;
+
+  opacity: 0.13;
+
+  transform: translateX(-50%) scale(1.3);
+
+  filter: blur(35px);
+
+  animation: backgroundCloudMovement 70s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundCloudMovement {
+  0% {
+    transform: translateX(-55%) translateY(0) scale(1.3);
+  }
+
+  100% {
+    transform: translateX(-42%) translateY(-35px) scale(1.42);
+  }
+}
+
+/* =========================================
+   CLOUD BREATHING
+========================================= */
+
+@keyframes cloudBreathing {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
 
 /* =========================================
    MOON
 ========================================= */
 
-.moon-wrapper {
-	position: absolute;
+.welcome-moon {
+  position: absolute;
 
-	top: 7%;
-	left: 50%;
+  z-index: 4;
 
-	width: 240px;
-	height: 240px;
+  width: 178px;
+  height: 178px;
 
-	transform: translateX(-50%)
-		translate(
-			calc(var(--mouse-x, 0px) * 0.15),
-			calc(var(--mouse-y, 0px) * 0.15)
-		);
+  top: 82px;
+  left: 50%;
 
-	transition: transform 1.5s ease-out;
+  transform: translateX(-50%);
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  border-radius: 50%;
 
-	z-index: 2;
+  background: radial-gradient(
+    circle at 34% 28%,
+    #ffffff 0%,
+    #fafbfe 45%,
+    #e8edf5 76%,
+    #d7deea 100%
+  );
+
+  box-shadow:
+    0 0 22px rgba(245, 248, 255, 0.82),
+    0 0 48px rgba(198, 216, 245, 0.48),
+    0 0 100px rgba(125, 157, 210, 0.25);
+
+  animation: moonPulse 9s ease-in-out infinite alternate;
 }
 
-.moon-wrapper::before {
-	content: '';
+@keyframes moonPulse {
+  0% {
+    box-shadow:
+      0 0 20px rgba(245, 248, 255, 0.72),
+      0 0 45px rgba(198, 216, 245, 0.38),
+      0 0 85px rgba(125, 157, 210, 0.18);
+  }
 
-	position: absolute;
-
-	width: 300px;
-	height: 300px;
-
-	border-radius: 50%;
-
-	background: rgba(180, 205, 255, 0.12);
-
-	filter: blur(38px);
-
-	animation: moonGlow 5s ease-in-out infinite alternate;
-}
-
-.moon {
-	position: relative;
-
-	width: 165px;
-	height: 165px;
-
-	border-radius: 50%;
-
-	background: radial-gradient(
-		circle at 35% 30%,
-		#ffffff 0%,
-		#edf1fa 45%,
-		#c5cfdf 100%
-	);
-
-	box-shadow:
-		0 0 30px rgba(255, 255, 255, 0.35),
-		0 0 75px rgba(170, 195, 255, 0.28);
-
-	animation: moonFloat 7s ease-in-out infinite alternate;
-}
-
-@keyframes moonFloat {
-	from {
-		transform: translateY(0);
-	}
-
-	to {
-		transform: translateY(-7px);
-	}
-}
-
-@keyframes moonGlow {
-	from {
-		opacity: 0.45;
-		transform: scale(0.95);
-	}
-
-	to {
-		opacity: 0.9;
-		transform: scale(1.05);
-	}
+  100% {
+    box-shadow:
+      0 0 28px rgba(245, 248, 255, 0.92),
+      0 0 60px rgba(198, 216, 245, 0.56),
+      0 0 115px rgba(125, 157, 210, 0.3);
+  }
 }
 
 /* =========================================
-   CLOUDS
+   MOON CRATERS
 ========================================= */
 
-.cloud {
-	position: absolute;
+.moon-crater {
+  position: absolute;
 
-	z-index: 3;
+  border-radius: 50%;
 
-	width: 260px;
-	height: 55px;
+  background: rgba(160, 170, 190, 0.14);
 
-	border-radius: 50px;
-
-	background: rgba(190, 205, 230, 0.08);
-
-	filter: blur(10px);
-
-	pointer-events: none;
+  box-shadow: inset 2px 2px 5px rgba(130, 140, 160, 0.08);
 }
 
-.cloud::before,
-.cloud::after {
-	content: '';
+.crater-one {
+  width: 38px;
+  height: 24px;
 
-	position: absolute;
-
-	border-radius: 50%;
-
-	background: rgba(190, 205, 230, 0.08);
+  left: 34px;
+  top: 48px;
 }
 
-.cloud::before {
-	width: 110px;
-	height: 110px;
+.crater-two {
+  width: 29px;
+  height: 19px;
 
-	left: 45px;
-	bottom: -10px;
+  right: 30px;
+  top: 82px;
 }
 
-.cloud::after {
-	width: 85px;
-	height: 85px;
+.crater-three {
+  width: 23px;
+  height: 15px;
 
-	left: 125px;
-	bottom: -5px;
+  left: 76px;
+  bottom: 28px;
 }
 
-.cloud-one {
-	top: 18%;
-	left: -300px;
+.crater-four {
+  width: 17px;
+  height: 12px;
 
-	animation: cloudMoveOne 38s linear infinite;
-}
-
-.cloud-two {
-	top: 30%;
-	left: -400px;
-
-	opacity: 0.55;
-
-	transform: scale(0.7);
-
-	animation: cloudMoveTwo 52s linear infinite;
-}
-
-.cloud-three {
-	top: 14%;
-	left: -500px;
-
-	opacity: 0.35;
-
-	transform: scale(0.5);
-
-	animation: cloudMoveThree 65s linear infinite;
-}
-
-@keyframes cloudMoveOne {
-	from {
-		left: -300px;
-	}
-
-	to {
-		left: 110%;
-	}
-}
-
-@keyframes cloudMoveTwo {
-	from {
-		left: -400px;
-	}
-
-	to {
-		left: 110%;
-	}
-}
-
-@keyframes cloudMoveThree {
-	from {
-		left: -500px;
-	}
-
-	to {
-		left: 110%;
-	}
+  left: 55px;
+  top: 105px;
 }
 
 /* =========================================
    CONTENT
 ========================================= */
 
-.join-content {
-	position: relative;
+.welcome-content {
+  position: relative;
 
-	z-index: 10;
+  z-index: 10;
 
-	width: 420px;
+  width: 100%;
+  height: 100%;
 
-	margin-top: 130px;
+  display: flex;
 
-	text-align: center;
+  flex-direction: column;
 
-	animation: contentAppear 1s ease-out;
-}
+  align-items: center;
 
-@keyframes contentAppear {
-	from {
-		opacity: 0;
+  padding-top: 282px;
 
-		transform: translateY(20px);
-	}
+  box-sizing: border-box;
 
-	to {
-		opacity: 1;
-
-		transform: translateY(0);
-	}
-}
-
-/* =========================================
-   APP ICON
-========================================= */
-
-.app-icon {
-	width: 42px;
-	height: 42px;
-
-	margin: 0 auto 12px;
-
-	display: flex;
-
-	align-items: center;
-	justify-content: center;
-
-	border-radius: 12px;
-
-	background: rgba(255, 255, 255, 0.1);
-
-	border: 1px solid rgba(255, 255, 255, 0.15);
-
-	backdrop-filter: blur(15px);
-
-	font-size: 20px;
+  pointer-events: none;
 }
 
 /* =========================================
    TITLE
 ========================================= */
 
-.join-content h1 {
-	margin: 0;
+.welcome-title {
+  text-align: center;
 
-	font-size: 42px;
-
-	font-weight: 600;
-
-	letter-spacing: -1.5px;
-
-	text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 30px;
 }
 
-.subtitle {
-	margin-top: 8px;
+.welcome-title h1 {
+  margin: 0 0 8px;
 
-	font-size: 16px;
+  color: #ffffff;
 
-	color: rgba(255, 255, 255, 0.62);
+  font-size: 44px;
+
+  line-height: 1.1;
+
+  font-weight: 500;
+
+  letter-spacing: -1.5px;
+
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.38);
+}
+
+.welcome-title p {
+  margin: 0;
+
+  color: #aeb7c8;
+
+  font-size: 17px;
+
+  line-height: 1.5;
 }
 
 /* =========================================
    GLASS CARD
 ========================================= */
 
-.join-card {
-	margin-top: 32px;
+.welcome-card {
+  width: 450px;
 
-	padding: 28px;
+  padding: 32px 30px 27px;
 
-	border-radius: 24px;
+  box-sizing: border-box;
 
-	background: rgba(255, 255, 255, 0.065);
+  text-align: center;
 
-	border: 1px solid rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 
-	box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+  border-radius: 24px;
 
-	backdrop-filter: blur(28px);
+  background: linear-gradient(
+    145deg,
+    rgba(37, 47, 72, 0.76),
+    rgba(19, 28, 49, 0.78)
+  );
 
-	-webkit-backdrop-filter: blur(28px);
+  backdrop-filter: blur(24px);
+
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  pointer-events: auto;
+
+  animation: cardFloat 8s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 /* =========================================
-   TEXT
+   CARD CONTENT
 ========================================= */
 
-.welcome-text {
-	margin: 0 0 5px;
+.welcome-label {
+  margin-bottom: 9px;
 
-	font-size: 13px;
+  color: #929caf;
 
-	text-transform: uppercase;
+  font-size: 13px;
 
-	letter-spacing: 1.5px;
+  font-weight: 500;
 
-	color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1.6px;
 }
 
-.join-card h2 {
-	margin: 0 0 20px;
+.welcome-card h2 {
+  margin: 0 0 22px;
 
-	font-size: 23px;
+  color: #ffffff;
 
-	font-weight: 500;
+  font-size: 25px;
+
+  line-height: 1.2;
+
+  font-weight: 600;
 }
 
 /* =========================================
    INPUT
 ========================================= */
 
-.join-card input {
-	width: 100%;
+.welcome-card input {
+  width: 100%;
 
-	padding: 14px 16px;
+  height: 51px;
 
-	box-sizing: border-box;
+  padding: 0 16px;
 
-	border-radius: 12px;
+  box-sizing: border-box;
 
-	border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 
-	outline: none;
+  border-radius: 12px;
 
-	background: rgba(0, 0, 0, 0.2);
+  outline: none;
 
-	color: white;
+  background: rgba(4, 11, 25, 0.7);
 
-	font-size: 15px;
+  color: #ffffff;
 
-	transition:
-		border 0.25s,
-		background 0.25s,
-		box-shadow 0.25s;
+  font-family: inherit;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.join-card input::placeholder {
-	color: rgba(255, 255, 255, 0.38);
+.welcome-card input::placeholder {
+  color: #788398;
 }
 
-.join-card input:focus {
-	background: rgba(0, 0, 0, 0.28);
+.welcome-card input:focus {
+  border-color: rgba(150, 175, 220, 0.48);
 
-	border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(5, 13, 29, 0.82);
 
-	box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(110, 145, 205, 0.09);
 }
 
 /* =========================================
    BUTTON
 ========================================= */
 
-.join-card button {
-	width: 100%;
+.welcome-card button {
+  width: 100%;
 
-	margin-top: 12px;
+  height: 53px;
 
-	padding: 14px;
+  margin-top: 13px;
 
-	border: none;
+  border: none;
 
-	border-radius: 12px;
+  border-radius: 12px;
 
-	background: white;
+  background: #ffffff;
 
-	color: #111827;
+  color: #111827;
 
-	font-size: 15px;
+  font-family: inherit;
 
-	font-weight: 600;
+  font-size: 16px;
 
-	cursor: pointer;
+  font-weight: 600;
 
-	transition:
-		transform 0.2s,
-		box-shadow 0.2s;
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
 }
 
-.join-card button span {
-	margin-left: 8px;
+.welcome-card button:hover:not(:disabled) {
+  transform: translateY(-2px);
 
-	font-size: 18px;
+  box-shadow: 0 10px 28px rgba(255, 255, 255, 0.16);
 }
 
-.join-card button:hover {
-	transform: translateY(-2px);
-
-	box-shadow: 0 10px 30px rgba(255, 255, 255, 0.15);
+.welcome-card button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
-.join-card button:active {
-	transform: translateY(0);
+.welcome-card button:disabled {
+  opacity: 0.48;
+
+  cursor: not-allowed;
+}
+
+.arrow {
+  margin-left: 8px;
+
+  font-size: 20px;
+
+  vertical-align: -1px;
 }
 
 /* =========================================
    ROOM
 ========================================= */
 
-.room-label {
-	margin-top: 18px;
+.room-display {
+  margin-top: 21px;
 
-	font-size: 12px;
+  color: #7d879a;
 
-	color: rgba(255, 255, 255, 0.4);
+  font-size: 13px;
 }
 
-.room-label strong {
-	margin-left: 6px;
+.room-display strong {
+  color: #c3cad7;
 
-	color: rgba(255, 255, 255, 0.75);
-
-	font-weight: 500;
+  font-weight: 600;
 }
 
 /* =========================================
    FOOTER
 ========================================= */
 
-.join-footer {
-	position: absolute;
+.welcome-footer {
+  position: absolute;
 
-	bottom: 20px;
+  z-index: 20;
 
-	left: 0;
-	right: 0;
+  left: 0;
+  right: 0;
 
-	text-align: center;
+  bottom: 17px;
 
-	font-size: 11px;
+  color: #4a5468;
 
-	color: rgba(255, 255, 255, 0.25);
+  text-align: center;
 
-	letter-spacing: 0.3px;
-
-	z-index: 10;
+  font-size: 12px;
 }
 
 /* =========================================
@@ -584,26 +821,65 @@
 ========================================= */
 
 @media (max-width: 600px) {
-	.join-content {
-		width: calc(100% - 40px);
+  .welcome-moon {
+    width: 135px;
+    height: 135px;
 
-		margin-top: 110px;
-	}
+    top: 58px;
+  }
 
-	.moon {
-		width: 135px;
-		height: 135px;
-	}
+  .welcome-content {
+    padding-top: 215px;
+  }
 
-	.moon-wrapper {
-		top: 7%;
-	}
+  .welcome-title {
+    margin-bottom: 24px;
+  }
 
-	.join-content h1 {
-		font-size: 34px;
-	}
+  .welcome-title h1 {
+    font-size: 36px;
+  }
 
-	.join-card {
-		padding: 22px;
-	}
+  .welcome-title p {
+    font-size: 15px;
+  }
+
+  .welcome-card {
+    width: calc(100% - 30px);
+
+    padding: 28px 22px 24px;
+  }
+
+  .welcome-card h2 {
+    font-size: 22px;
+  }
+
+  .real-cloud {
+    transform: scale(0.75);
+  }
+
+  .cloud-left {
+    left: -390px;
+  }
+
+  .cloud-right {
+    right: -430px;
+  }
+
+  .welcome-footer {
+    bottom: 12px;
+  }
+}
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .star,
+  .real-cloud,
+  .welcome-moon,
+  .welcome-card {
+    animation: none;
+  }
 }

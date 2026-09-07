@@ -1,4 +1,4 @@
-var PORT = 8080;
+var PORT = process.env.PORT || 8080;
 
 var express = require('express');
 var fs = require('fs');
@@ -12,27 +12,21 @@ var server = require('http').Server(app);
 
 var io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     methods: ['GET', 'POST'],
   },
 });
 
-// Store users currently connected to each room
 var users = {};
-
-// Store drawings for each room
 var drawings = {};
 
-// File where whiteboard data will be saved
 var dataFile = path.join(__dirname, 'temp', 'whiteboards.json');
 
-// --------------------------------------
-// Load saved whiteboards when server starts
-// --------------------------------------
-
+// Load saved whiteboards
 if (fs.existsSync(dataFile)) {
   try {
     drawings = JSON.parse(fs.readFileSync(dataFile, 'utf8'));
+
     console.log('Saved whiteboards loaded');
   } catch (error) {
     console.log('Could not load saved whiteboards');
@@ -40,32 +34,23 @@ if (fs.existsSync(dataFile)) {
   }
 }
 
-// --------------------------------------
 // Save whiteboards to JSON file
-// --------------------------------------
-
 function saveWhiteboards() {
   fs.writeFileSync(dataFile, JSON.stringify(drawings, null, 2), 'utf8');
 }
 
-// --------------------------------------
 // Start server
-// --------------------------------------
-
-server.listen(PORT, function () {
-  console.log('Webserver & socketserver running on port:' + PORT);
+server.listen(PORT, '0.0.0.0', function () {
+  console.log('Webserver & socketserver running on port: ' + PORT);
 });
 
-// --------------------------------------
-// Socket.IO
-// --------------------------------------
-
+// Socket.IO connection
 io.on('connection', function (socket) {
   console.log('Client connected:', socket.id);
 
-  // ----------------------------------
+  // ==============================
   // JOIN ROOM
-  // ----------------------------------
+  // ==============================
 
   socket.on('joinRoom', function (data) {
     var roomId = data.roomId;
@@ -78,28 +63,28 @@ io.on('connection', function (socket) {
     socket.roomId = roomId;
     socket.username = username;
 
-    // Create users object for this room
+    // Create users object for room
     if (!users[roomId]) {
       users[roomId] = {};
     }
 
     users[roomId][socket.id] = username;
 
-    // Create drawing array if room has never existed
+    // Create drawings array for room
     if (!drawings[roomId]) {
       drawings[roomId] = [];
     }
 
-    // Send current users to everyone in room
+    // Send updated users list
     io.to(roomId).emit('usersUpdate', users[roomId]);
 
-    // Send saved drawings to newly joined user
+    // Send existing drawings to newly joined user
     socket.emit('boardUpdate', drawings[roomId]);
   });
 
-  // ----------------------------------
+  // ==============================
   // DRAW
-  // ----------------------------------
+  // ==============================
 
   socket.on('drawToWhiteboard', function (drawingData) {
     var roomId = socket.roomId;
@@ -118,21 +103,21 @@ io.on('connection', function (socket) {
       stroke: drawingData.stroke,
     };
 
-    // Store drawing
+    // Save drawing
     drawings[roomId].push(drawing);
 
-    // Save drawing permanently
+    // Persist drawing
     saveWhiteboards();
 
     console.log('Drawing received from:', socket.username, 'in room:', roomId);
 
-    // Send drawing to other users in same room
+    // Send drawing to other users
     socket.to(roomId).emit('drawToWhiteboard', drawingData);
   });
 
-  // ----------------------------------
+  // ==============================
   // CLEAR BOARD
-  // ----------------------------------
+  // ==============================
 
   socket.on('clearBoard', function () {
     var roomId = socket.roomId;
@@ -145,16 +130,15 @@ io.on('connection', function (socket) {
 
     drawings[roomId] = [];
 
-    // Save cleared board
     saveWhiteboards();
 
-    // Clear everyone's board in this room
+    // Clear board for everyone
     io.to(roomId).emit('clearBoard');
   });
 
-  // ----------------------------------
+  // ==============================
   // UNDO
-  // ----------------------------------
+  // ==============================
 
   socket.on('undo', function () {
     var roomId = socket.roomId;
@@ -165,7 +149,7 @@ io.on('connection', function (socket) {
 
     console.log('Undo requested by:', socket.username, 'in room:', roomId);
 
-    // Remove the latest drawing
+    // Find the latest drawing
     // made by this user
     for (var i = drawings[roomId].length - 1; i >= 0; i--) {
       if (drawings[roomId][i].socketId === socket.id) {
@@ -175,16 +159,15 @@ io.on('connection', function (socket) {
       }
     }
 
-    // Save updated board
     saveWhiteboards();
 
     // Send updated board to everyone
     io.to(roomId).emit('boardUpdate', drawings[roomId]);
   });
 
-  // ----------------------------------
-  // LIVE CURSOR
-  // ----------------------------------
+  // ==============================
+  // CURSOR MOVE
+  // ==============================
 
   socket.on('cursorMove', function (cursorData) {
     var roomId = socket.roomId;
@@ -195,14 +178,14 @@ io.on('connection', function (socket) {
 
     cursorData.socketId = socket.id;
 
-    // Send cursor only to users
-    // in the same room
+    // Send cursor position
+    // to other users in the room
     socket.to(roomId).emit('cursorMove', cursorData);
   });
 
-  // ----------------------------------
+  // ==============================
   // DISCONNECT
-  // ----------------------------------
+  // ==============================
 
   socket.on('disconnect', function () {
     var roomId = socket.roomId;
@@ -220,13 +203,12 @@ io.on('connection', function (socket) {
       io.to(roomId).emit('usersUpdate', users[roomId]);
     }
 
-    // Remove remote cursor
+    // Remove cursor
     io.to(roomId).emit('cursorRemove', socket.id);
 
     // IMPORTANT:
-    // We DO NOT delete drawings[roomId].
-    //
-    // This means the whiteboard remains saved
+    // Do not delete drawings.
+    // Whiteboard data remains saved
     // even after everyone leaves.
 
     if (users[roomId] && Object.keys(users[roomId]).length === 0) {
