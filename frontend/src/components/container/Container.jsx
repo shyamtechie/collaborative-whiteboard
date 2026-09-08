@@ -37,6 +37,12 @@ class Container extends Component {
       eraserWidth: 20,
 
       isEraser: false,
+
+      aiOpen: false,
+      aiLoading: false,
+      aiAction: '',
+      aiResult: '',
+      aiError: '',
     };
 
     this.socket = null;
@@ -102,7 +108,6 @@ class Container extends Component {
       this.setState((previousState) => ({
         remoteCursors: {
           ...previousState.remoteCursors,
-
           [cursorData.socketId]: cursorData,
         },
       }));
@@ -126,7 +131,6 @@ class Container extends Component {
   componentWillUnmount() {
     if (this.socket) {
       this.socket.disconnect();
-
       this.socket = null;
     }
   }
@@ -147,7 +151,6 @@ class Container extends Component {
         if (this.socket) {
           this.socket.emit('joinRoom', {
             roomId: this.state.roomId,
-
             username: this.state.username,
           });
         }
@@ -166,15 +169,14 @@ class Container extends Component {
 
     this.socket.emit('drawToWhiteboard', {
       username: this.state.username,
-
       stroke: stroke,
+      isEraser: isEraser,
     });
   };
 
   handleColorChange = (event) => {
     this.setState({
       strokeColor: event.target.value,
-
       isEraser: false,
     });
 
@@ -247,15 +249,509 @@ class Container extends Component {
     var rect = event.currentTarget.getBoundingClientRect();
 
     var x = event.clientX - rect.left;
-
     var y = event.clientY - rect.top;
 
     this.socket.emit('cursorMove', {
       x: x,
       y: y,
-
       username: this.state.username,
     });
+  };
+
+  /*
+   * ----------------------------------------------------
+   * AI ASSISTANT
+   * ----------------------------------------------------
+   */
+
+  openAI = () => {
+    this.setState({
+      aiOpen: true,
+      aiLoading: false,
+      aiResult: '',
+      aiError: '',
+      aiAction: '',
+    });
+  };
+
+  closeAI = () => {
+    if (this.state.aiLoading) {
+      return;
+    }
+
+    this.setState({
+      aiOpen: false,
+      aiLoading: false,
+      aiResult: '',
+      aiError: '',
+      aiAction: '',
+    });
+  };
+
+  handleAI = async (action) => {
+    if (!this.canvasRef.current) {
+      console.error('Canvas reference not available.');
+      return;
+    }
+
+    console.log('========== AI REQUEST START ==========');
+
+    console.log('AI action:', action);
+
+    this.setState({
+      aiLoading: true,
+      aiAction: action,
+      aiResult: '',
+      aiError: '',
+    });
+
+    var timeoutId = null;
+
+    try {
+      /*
+       * Export current whiteboard
+       */
+
+      console.log('Exporting whiteboard image...');
+
+      var image = await this.canvasRef.current.exportImage();
+
+      if (!image) {
+        throw new Error('Could not export the whiteboard.');
+      }
+
+      console.log('Whiteboard image exported successfully.');
+
+      /*
+       * Backend URL
+       */
+
+      var backendUrl = process.env.REACT_APP_SOCKET_URL;
+
+      if (!backendUrl) {
+        throw new Error('REACT_APP_SOCKET_URL is not configured.');
+      }
+
+      var apiUrl = backendUrl + '/api/ai/analyze';
+
+      console.log('AI API URL:', apiUrl);
+
+      /*
+       * Create timeout
+       */
+
+      var controller = new AbortController();
+
+      timeoutId = setTimeout(() => {
+        console.error('AI request timed out.');
+
+        controller.abort();
+      }, 60000);
+
+      /*
+       * Send request
+       */
+
+      console.log('Sending whiteboard image to backend...');
+
+      var response = await fetch(apiUrl, {
+        method: 'POST',
+
+        headers: {
+          'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+          image: image,
+          action: action,
+        }),
+
+        signal: controller.signal,
+      });
+
+      console.log('Backend response received.', response.status);
+
+      /*
+       * Read response as TEXT first.
+       *
+       * This is intentionally safer than directly
+       * calling response.json().
+       */
+
+      var responseText = await response.text();
+
+      console.log('Backend response body:', responseText);
+
+      if (!responseText) {
+        throw new Error('The AI server returned an empty response.');
+      }
+
+      var data;
+
+      try {
+        data = JSON.parse(responseText);
+      } catch (parseError) {
+        console.error('Could not parse backend response:', parseError);
+
+        throw new Error('The AI server returned an invalid response.');
+      }
+
+      /*
+       * Backend error
+       */
+
+      if (!response.ok) {
+        var backendError =
+          data && data.error ? data.error : 'AI request failed.';
+
+        if (typeof backendError === 'object') {
+          backendError = backendError.message || JSON.stringify(backendError);
+        }
+
+        throw new Error(backendError);
+      }
+
+      /*
+       * Successful response
+       */
+
+      var result = data && data.result ? data.result : '';
+
+      console.log('AI result received:', result);
+
+      if (!result) {
+        throw new Error(
+          'AI responded successfully, but no result was returned.',
+        );
+      }
+
+      /*
+       * Update React state
+       */
+
+      this.setState({
+        aiLoading: false,
+        aiResult: result,
+        aiError: '',
+      });
+
+      console.log('AI result displayed successfully.');
+    } catch (error) {
+      console.error('========== AI REQUEST ERROR ==========');
+
+      console.error(error);
+
+      var errorMessage = 'Something went wrong while analyzing the whiteboard.';
+
+      if (error && error.name === 'AbortError') {
+        errorMessage = 'The AI request took too long. Please try again.';
+      } else if (error && error.message) {
+        errorMessage = error.message;
+      }
+
+      this.setState({
+        aiLoading: false,
+        aiResult: '',
+        aiError: errorMessage,
+      });
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      /*
+       * Safety check:
+       *
+       * Never leave the UI permanently stuck
+       * in "Analyzing whiteboard..."
+       */
+
+      this.setState((previousState) => {
+        if (previousState.aiLoading && previousState.aiError) {
+          return {
+            aiLoading: false,
+          };
+        }
+
+        return null;
+      });
+
+      console.log('========== AI REQUEST END ==========');
+    }
+  };
+
+  /*
+   * ----------------------------------------------------
+   * AI MARKDOWN FORMATTER
+   * ----------------------------------------------------
+   */
+
+  renderInlineMarkdown = (text) => {
+    var parts = text.split(/(\*\*.*?\*\*|`.*?`)/);
+
+    return parts.map((part, index) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={index}>{part.slice(2, -2)}</strong>;
+      }
+
+      if (part.startsWith('`') && part.endsWith('`')) {
+        return (
+          <code key={index} className="ai-inline-code">
+            {part.slice(1, -1)}
+          </code>
+        );
+      }
+
+      return <React.Fragment key={index}>{part}</React.Fragment>;
+    });
+  };
+
+  renderAIText = (text) => {
+    if (!text) {
+      return null;
+    }
+
+    var lines = text.split('\n');
+
+    return (
+      <div className="ai-formatted-content">
+        {lines.map((line, index) => {
+          var trimmed = line.trim();
+
+          /*
+           * Empty line
+           */
+
+          if (!trimmed) {
+            return <div key={index} className="ai-spacer"></div>;
+          }
+
+          /*
+           * Headings
+           */
+
+          if (trimmed.startsWith('### ')) {
+            return (
+              <h3 key={index} className="ai-markdown-heading">
+                {this.renderInlineMarkdown(trimmed.slice(4))}
+              </h3>
+            );
+          }
+
+          if (trimmed.startsWith('## ')) {
+            return (
+              <h3 key={index} className="ai-markdown-heading">
+                {this.renderInlineMarkdown(trimmed.slice(3))}
+              </h3>
+            );
+          }
+
+          if (trimmed.startsWith('# ')) {
+            return (
+              <h3 key={index} className="ai-markdown-heading">
+                {this.renderInlineMarkdown(trimmed.slice(2))}
+              </h3>
+            );
+          }
+
+          /*
+           * Horizontal rule
+           */
+
+          if (trimmed === '---' || trimmed === '***') {
+            return <hr key={index} className="ai-divider" />;
+          }
+
+          /*
+           * Bullet point
+           */
+
+          if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+            return (
+              <div key={index} className="ai-bullet">
+                <span>•</span>
+
+                <div>{this.renderInlineMarkdown(trimmed.slice(2))}</div>
+              </div>
+            );
+          }
+
+          /*
+           * Numbered list
+           */
+
+          var numberedMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
+
+          if (numberedMatch) {
+            return (
+              <div key={index} className="ai-numbered-item">
+                <span className="ai-number">{numberedMatch[1]}</span>
+
+                <div>{this.renderInlineMarkdown(numberedMatch[2])}</div>
+              </div>
+            );
+          }
+
+          /*
+           * Normal paragraph
+           */
+
+          return (
+            <p key={index} className="ai-paragraph">
+              {this.renderInlineMarkdown(trimmed)}
+            </p>
+          );
+        })}
+      </div>
+    );
+  };
+
+  renderAI = () => {
+    if (!this.state.aiOpen) {
+      return null;
+    }
+
+    return (
+      <div className="ai-overlay">
+        <div className="ai-panel">
+          {/* AI HEADER */}
+
+          <div className="ai-header">
+            <div>
+              <h2>🤖 AI Whiteboard Assistant</h2>
+
+              <p>Analyze your current whiteboard with AI</p>
+            </div>
+
+            <button
+              className="ai-close-button"
+              onClick={this.closeAI}
+              disabled={this.state.aiLoading}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* AI ACTIONS */}
+
+          <div className="ai-actions">
+            <button
+              className={
+                this.state.aiAction === 'explain'
+                  ? 'ai-action-button ai-action-selected'
+                  : 'ai-action-button'
+              }
+              onClick={() => this.handleAI('explain')}
+              disabled={this.state.aiLoading}
+            >
+              <span>🧠</span>
+
+              <div>
+                <strong>Explain</strong>
+
+                <small>Understand the diagram</small>
+              </div>
+            </button>
+
+            <button
+              className={
+                this.state.aiAction === 'summarize'
+                  ? 'ai-action-button ai-action-selected'
+                  : 'ai-action-button'
+              }
+              onClick={() => this.handleAI('summarize')}
+              disabled={this.state.aiLoading}
+            >
+              <span>📝</span>
+
+              <div>
+                <strong>Summarize</strong>
+
+                <small>Get the main points</small>
+              </div>
+            </button>
+
+            <button
+              className={
+                this.state.aiAction === 'improve'
+                  ? 'ai-action-button ai-action-selected'
+                  : 'ai-action-button'
+              }
+              onClick={() => this.handleAI('improve')}
+              disabled={this.state.aiLoading}
+            >
+              <span>✨</span>
+
+              <div>
+                <strong>Improve</strong>
+
+                <small>Get design suggestions</small>
+              </div>
+            </button>
+          </div>
+
+          {/* LOADING */}
+
+          {this.state.aiLoading && (
+            <div className="ai-loading">
+              <div className="ai-spinner"></div>
+
+              <div>
+                <strong>Analyzing whiteboard...</strong>
+
+                <p>AI is looking at your current drawing.</p>
+              </div>
+            </div>
+          )}
+
+          {/* ERROR */}
+
+          {!this.state.aiLoading && this.state.aiError && (
+            <div className="ai-error">
+              <strong>AI request failed</strong>
+
+              <p>{this.state.aiError}</p>
+            </div>
+          )}
+
+          {/* RESULT */}
+
+          {!this.state.aiLoading && this.state.aiResult && (
+            <div className="ai-result">
+              <div className="ai-result-title">
+                <span>
+                  {this.state.aiAction === 'explain' && '🧠 Explanation'}
+
+                  {this.state.aiAction === 'summarize' && '📝 Summary'}
+
+                  {this.state.aiAction === 'improve' && '✨ Improvements'}
+                </span>
+              </div>
+
+              <div className="ai-result-content">
+                {this.renderAIText(this.state.aiResult)}
+              </div>
+            </div>
+          )}
+
+          {/* EMPTY STATE */}
+
+          {!this.state.aiLoading &&
+            !this.state.aiResult &&
+            !this.state.aiError && (
+              <div className="ai-empty">
+                <div className="ai-empty-icon">🤖</div>
+
+                <h3>Ask AI about your whiteboard</h3>
+
+                <p>
+                  Choose an action above and AI will analyze the current board.
+                </p>
+              </div>
+            )}
+        </div>
+      </div>
+    );
   };
 
   render() {
@@ -355,6 +851,10 @@ class Container extends Component {
           >
             🗑️ Clear
           </button>
+
+          <button className="tool-button ai-tool-button" onClick={this.openAI}>
+            🤖 AI Assistant
+          </button>
         </div>
 
         {/* WHITEBOARD */}
@@ -377,7 +877,6 @@ class Container extends Component {
                 className="remote-cursor"
                 style={{
                   left: cursor.x,
-
                   top: cursor.y,
                 }}
               >
@@ -388,6 +887,10 @@ class Container extends Component {
             ),
           )}
         </div>
+
+        {/* AI PANEL */}
+
+        {this.renderAI()}
       </div>
     );
   }
