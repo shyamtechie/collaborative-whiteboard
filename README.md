@@ -1,62 +1,105 @@
-# Real-Time Collaborative Whiteboard
+Real-Time Collaborative Whiteboard
 
-A real-time collaborative whiteboard where multiple users can join the same room and draw together. Changes are synchronized instantly using Socket.IO, with support for user presence, live cursors, undo, clearing the board, and persistent whiteboard state.
+A real-time collaborative whiteboard that allows multiple users to join the same room and draw together. Drawing changes are synchronized instantly using Socket.IO.
 
-## Features
+The application also includes an AI Whiteboard Assistant powered by Google Gemini that can analyze the whiteboard and provide explanations, summaries, and improvement suggestions.
 
-- 🎨 Real-time collaborative drawing
-- 🏠 Room-based collaboration
-- 👥 Username and online-user presence
-- ✏️ Live remote cursors
-- ↩️ User-specific undo
-- 🗑️ Clear whiteboard for everyone in the room
-- 💾 Persistent whiteboard state using JSON storage
-- 🎨 Custom drawing colors
-- 📏 Adjustable stroke width
-- 🌙 Responsive dark-themed interface
+Live Demo
 
-## Tech Stack
+Frontend:  
+https://collaborative-whiteboard-eosin-psi.vercel.app
 
-### Frontend
+Backend:  
+https://collaborative-whiteboard-o9vu.onrender.com
+
+Features
+
+Collaborative Whiteboard
+
+- Real-time collaborative drawing
+- Room-based collaboration
+- Multiple users can work on the same whiteboard
+- Username and online-user presence
+- Live remote cursors
+- User-specific undo
+- Clear whiteboard for everyone in the room
+- Persistent whiteboard state using JSON storage
+
+Drawing Tools
+
+- Custom drawing colors
+- Adjustable stroke width
+- Eraser mode
+- Adjustable eraser width
+- Responsive canvas
+- Dark-themed interface
+
+AI Whiteboard Assistant
+
+The application integrates Google Gemini to analyze the whiteboard image.
+
+The AI Assistant provides three operations:
+
+- Explain — explains the diagram, concepts, relationships, and flow visible on the whiteboard
+- Summarize — provides a concise summary of the whiteboard
+- Improve — identifies possible improvements and missing elements in the diagram
+
+The AI integration also includes retry and fallback handling for temporary Gemini model availability issues.
+
+Tech Stack
+
+Frontend
+
 - React
 - React Sketch Canvas
 - Socket.IO Client
 - CSS
 
-### Backend
+Backend
+
 - Node.js
 - Express
 - Socket.IO
-- File System (JSON persistence)
+- File System
+- JSON persistence
 
-## Project Structure
+AI
+
+- Google Gemini API
+- `@google/genai`
+
+Deployment
+
+- Vercel — Frontend
+- Render — Backend
+- GitHub — Source Control
+
+Architecture
 
 ```text
-collaborative-whiteboard/
-│
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── board/
-│   │   │   │   ├── Board.jsx
-│   │   │   │   └── style.css
-│   │   │   │
-│   │   │   ├── container/
-│   │   │   │   ├── Container.jsx
-│   │   │   │   └── Container.css
-│   │   │   │
-│   │   │   └── join/
-│   │   │       ├── JoinScreen.jsx
-│   │   │       └── JoinScreen.css
-│   │   │
-│   │   ├── App.js
-│   │   └── index.js
-│   │
-│   └── package.json
-│
-├── server.js
-├── temp/
-│   └── .gitkeep
-│
-├── .gitignore
-└── README.md
+                    ┌─────────────────────┐
+                    │      React App      │
+                    │      (Vercel)       │
+                    └──────────┬──────────┘
+                               │
+                     Socket.IO / HTTP
+                               │
+                               ▼
+                    ┌─────────────────────┐
+                    │   Node.js + Express │
+                    │      (Render)        │
+                    └───────┬───────┬─────┘
+                            │       │
+                  Socket.IO │       │ Gemini API
+                            │       │
+                            ▼       ▼
+                    ┌──────────┐  ┌─────────────┐
+                    │  Rooms & │  │   Google    │
+                    │ Drawings │  │   Gemini AI  │
+                    └──────────┘  └─────────────┘
+                            │
+                            ▼
+                    ┌─────────────────┐
+                    │ JSON Persistence│
+                    └─────────────────┘
+```
