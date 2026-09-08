@@ -6,6 +6,20 @@ The application also includes an AI Whiteboard Assistant powered by Google Gemin
 
 Live Demo
 
+Screenshots
+
+Join a Room
+
+[Join Screen](screenshots/join-screen.png)
+
+Collaborative Whiteboard
+
+[Collaborative Whiteboard](screenshots/whiteboard.png)
+
+AI Whiteboard Assistant
+
+[AI Whiteboard Assistant](screenshots/ai-assistant.png)
+
 Frontend:  
 https://collaborative-whiteboard-eosin-psi.vercel.app
 
